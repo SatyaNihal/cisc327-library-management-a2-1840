@@ -25,11 +25,13 @@ jobs:
       - name: Install dependencies
         run: |
           python -m pip install --upgrade pip
+          pip install pytest flask pytest-mock coverage
           if [ -f requirements.txt ]; then pip install -r requirements.txt; fi
-          pip install pytest flask
 
       - name: Initialize database via app.py
         run: python -c "import app; app.create_app()"
 
-      - name: Run tests
-        run: pytest -v
+      - name: Run tests with coverage
+        run: |
+          coverage run -m pytest -v
+          coverage report -m
